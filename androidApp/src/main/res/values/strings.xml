@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SpanieNaKanapie</string>
+    <string name="register_failed">Register filed</string>
+    <string name="login_filed">Login filed</string>
+</resources>
