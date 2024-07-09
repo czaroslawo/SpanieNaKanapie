@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.spanienakanapie.authorization.LoginScreen
+import com.example.spanienakanapie.authorization.RegistrationScreen
 import com.example.spanienakanapie.model.BottomNavItem
 
 
@@ -86,6 +87,9 @@ modifier = Modifier.fillMaxSize()
             ) {
                 composable(Screen.Login.route) {
                     LoginScreen(navController)
+                }
+                composable(Screen.Register.route){
+                    RegistrationScreen(navController)
                 }
 
 

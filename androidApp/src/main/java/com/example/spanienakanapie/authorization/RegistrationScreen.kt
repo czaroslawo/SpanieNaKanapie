@@ -1,6 +1,6 @@
 package com.example.spanienakanapie.authorization
 
-import androidx.compose.foundation.Image
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,15 +37,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.shared.data.models.RegisterParams
 import com.example.spanienakanapie.viewmodels.AuthViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @ExperimentalMaterial3Api
 @Composable
 fun RegistrationScreen(
     navController: NavController,
-    viewModel: AuthViewModel
+    viewModel: AuthViewModel = viewModel()
 ){
 
 
@@ -134,7 +136,7 @@ fun RegistrationScreen(
 
                         OutlinedTextField(value = nameValue,
                             onValueChange = {
-                                viewModel.setName(it)
+                                nameValue = it
                         }, label = { Text(text = "Nazwa użytkownika") },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -148,7 +150,7 @@ fun RegistrationScreen(
 
                         OutlinedTextField(value = emailValue,
                             onValueChange = {
-                                viewModel.setEmail(it)
+                                emailValue = it
                         }, label = { Text(text = "E-mail") },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -177,7 +179,7 @@ fun RegistrationScreen(
 
                         OutlinedTextField(value = passwordValue,
                             onValueChange = {
-                                viewModel.setPassword(it)
+                                passwordValue = it
                             },
                             label = { Text(text = "Password") },
                             modifier = Modifier

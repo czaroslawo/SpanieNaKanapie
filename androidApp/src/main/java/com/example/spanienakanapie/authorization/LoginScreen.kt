@@ -128,7 +128,7 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = emailValue,
                         onValueChange = {
-                            viewModel.setEmail(it)
+                            emailValue = it
                         },
                         label = { Text("E-mail") },
                         modifier = Modifier
@@ -144,7 +144,7 @@ fun LoginScreen(
                     OutlinedTextField(
                         value = passwordValue,
                         onValueChange = {
-                        viewModel.setPassword(it) },
+                        passwordValue = it },
                         label = { Text(text = "Password") },
                         modifier = Modifier
                             .fillMaxWidth()

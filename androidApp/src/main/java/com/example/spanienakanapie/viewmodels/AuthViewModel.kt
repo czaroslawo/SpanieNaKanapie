@@ -43,12 +43,13 @@ class AuthViewModel : ViewModel(), KoinComponent {
             val result = repository.register(registerParams)
             when(result){
                 is Resource.Success ->{
+                    Log.d("Registration", "Success")
                     _state.value = state.value.copy(
                         //event = Event.NavigateEvent("HomeScreen")
                     )
                 }
                 is Resource.Error -> {
-                    Log.d("", result.message!!)
+                    Log.d("Registration", result.message!!)
                     _state.value = state.value.copy(
                         event = Event.SnackbarEvent(UiText.StringResource(R.string.register_failed).toString()))
                 }
@@ -61,13 +62,14 @@ class AuthViewModel : ViewModel(), KoinComponent {
             val result = repository.login(loginParams)
             when(result) {
                 is Resource.Success -> {
+                    Log.d("Login", "Success")
                     _state.value = state.value.copy(
                         //event = Event.NavigateEvent("HomeScreen")
                     )
                 }
 
                 is Resource.Error -> {
-                    Log.d("", result.message!!)
+                    Log.d("Login", result.message!!)
                     _state.value = state.value.copy(
                         event = Event.SnackbarEvent(
                             UiText.StringResource(R.string.login_filed).toString()
