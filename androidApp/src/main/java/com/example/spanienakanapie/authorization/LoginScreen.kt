@@ -22,6 +22,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
@@ -35,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -49,7 +52,9 @@ import com.example.shared.data.models.LoginParams
 import com.example.spanienakanapie.navigation.Screen
 import com.example.spanienakanapie.viewmodels.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.spanienakanapie.R
 import com.example.spanienakanapie.viewmodels.Event
+import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
@@ -65,6 +70,9 @@ fun LoginScreen(
     var passwordValue by remember {
         mutableStateOf("")
     }
+    var snackBarsState = remember {
+        SnackbarHostState()
+    }
 
     
     LaunchedEffect(state.event) {
@@ -73,13 +81,19 @@ fun LoginScreen(
                is Event.NavigateEvent -> {
 
                }
+                is Event.SnackbarEvent -> {
+                    launch{
+                        snackBarsState.showSnackbar(message = it.message)
+                    }
+                }
             }
         }
     }
 
 
     Scaffold(
-        contentWindowInsets = WindowInsets(0, 0, 0, 0)
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
+        snackbarHost = {SnackbarHost(hostState = snackBarsState)}
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

@@ -26,6 +26,11 @@ fun authModule() = module {
             }
             install(Logging) {
                 level = LogLevel.ALL
+                logger = object : io.ktor.client.plugins.logging.Logger {
+                    override fun log(message: String) {
+                        co.touchlab.kermit.Logger.d(message, null, "HTTP CLIENT")
+                    }
+                }
             }
             install(DefaultRequest) {
                 header(

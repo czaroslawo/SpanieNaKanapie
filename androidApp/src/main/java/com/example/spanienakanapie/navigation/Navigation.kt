@@ -38,14 +38,15 @@ fun Navigation() {
 
 
     val navController = rememberNavController()
-
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
-
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
 
     when (navBackStackEntry?.destination?.route) {
         Screen.Login.route ->{
+            bottomBarState.value = false
+        }
+        Screen.Register.route ->{
             bottomBarState.value = false
         }
     }

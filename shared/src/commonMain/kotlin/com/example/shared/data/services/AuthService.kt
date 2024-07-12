@@ -8,8 +8,8 @@ import de.jensklingenberg.ktorfit.http.GET
 import de.jensklingenberg.ktorfit.http.POST
 
 interface AuthService {
-    @POST("/user")
+    @POST("login")
     suspend fun login(@Body loginParams: LoginParams): UserToken?
-    @POST("/register")
+    @POST("register")
     suspend fun register(@Body registerParams: RegisterParams): UserToken
 }

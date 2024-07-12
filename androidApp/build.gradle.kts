@@ -79,7 +79,7 @@ dependencies {
 
 
     //icons
-    implementation("androidx.compose.material:material-icons-extended:1.7.0-alpha01")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
 
     //koin
     implementation("io.insert-koin:koin-android:$koin_version")
