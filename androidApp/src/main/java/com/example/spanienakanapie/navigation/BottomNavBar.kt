@@ -35,18 +35,18 @@ fun BottomNavigationBar(
         label = ""
     )
 
-            NavigationBar(
-                modifier = modifier
-                    .offset(y = bottomBarOffset)
-            ) {
-                items.forEach { item ->
-                    NavigationBarItem(
-                        selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
-                        onClick = { onItemClick(item) },
-                        label = { Text(item.name) },
-                        icon = { Icon(item.icon, contentDescription = null) }
-                    )
-                }
-            }
+    NavigationBar(
+        modifier = modifier
+            .offset(y = bottomBarOffset)
+    ) {
+        items.forEach { item ->
+            NavigationBarItem(
+                selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
+                onClick = { onItemClick(item) },
+                label = { Text(item.name) },
+                icon = { Icon(item.icon, contentDescription = null) }
+            )
+        }
+    }
 
 }

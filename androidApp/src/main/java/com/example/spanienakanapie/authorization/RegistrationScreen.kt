@@ -32,8 +32,11 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,12 +51,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.example.shared.data.models.RegisterParams
 import com.example.spanienakanapie.viewmodels.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.spanienakanapie.viewmodels.Event
+import kotlinx.coroutines.launch
+
+@ExperimentalLayoutApi
+@ExperimentalMaterial3Api
+@Composable
+@Preview
+fun RegistrationPreview(){
+    RegistrationScreen(navController = rememberNavController())
+}
 
 @ExperimentalLayoutApi
 @ExperimentalMaterial3Api
@@ -63,6 +78,7 @@ fun RegistrationScreen(
     viewModel: AuthViewModel = viewModel()
 ){
 
+    val state by viewModel.state.collectAsState()
 
     var nameValue by remember {
         mutableStateOf("")
@@ -100,7 +116,26 @@ fun RegistrationScreen(
     var samePasswordValidationChecked by remember {
         mutableStateOf(false)
     }
-    var scrollState = rememberScrollState()
+    val snackBarsState = remember {
+        SnackbarHostState()
+    }
+
+    val scrollState = rememberScrollState()
+    LaunchedEffect(state.event) {
+        state.event?.consume {
+            when (it) {
+                is Event.NavigateEvent -> {
+
+                }
+
+                is Event.SnackbarEvent -> {
+                    launch {
+                        snackBarsState.showSnackbar(message = it.message)
+                    }
+                }
+            }
+        }
+    }
 
 
 
@@ -110,21 +145,20 @@ fun RegistrationScreen(
 
         Column(Modifier.padding(innerPadding)
             ) {
+            Log.d("inner padding", innerPadding.toString())
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier
                     .fillMaxSize()
-                    .imePadding()
                     .verticalScroll(scrollState)
-                    .padding(vertical = 16.dp)
 
 
 
 
             ) {
                 Box(modifier = Modifier
-//                    .imePadding()
+                    .imePadding()
                     .height(480.dp)) {
 
                 ElevatedCard(
@@ -132,6 +166,7 @@ fun RegistrationScreen(
                         .fillMaxWidth()
                         .height(480.dp)
                         .padding(horizontal = 16.dp)
+
                         ,
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White
@@ -359,6 +394,7 @@ fun RegistrationScreen(
                                 ) {
                                     Text(text = "Zarejestruj się")
                                 }
+                                Log.d("inner padding", innerPadding.toString())
 
 
                             }
