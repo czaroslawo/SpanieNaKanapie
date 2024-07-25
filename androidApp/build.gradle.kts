@@ -98,6 +98,10 @@ android {
 
         implementation(project(":shared"))
 
+        //mapBox
+        implementation("com.mapbox.maps:android:11.5.0")
+        implementation("com.mapbox.extension:maps-compose:11.5.0")
+
 
     }
 }
