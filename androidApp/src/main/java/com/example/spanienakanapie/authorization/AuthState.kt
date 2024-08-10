@@ -1,4 +1,6 @@
-package com.example.spanienakanapie.viewmodels
+package com.example.spanienakanapie.authorization
+
+import com.example.spanienakanapie.viewmodels.Event
 
 data class AuthState(
     val name: String = "",

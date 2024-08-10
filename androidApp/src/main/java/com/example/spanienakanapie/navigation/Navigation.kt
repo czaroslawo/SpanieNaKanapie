@@ -26,6 +26,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.spanienakanapie.authorization.LoginScreen
 import com.example.spanienakanapie.authorization.RegistrationScreen
+import com.example.spanienakanapie.home.HomeScreen
 import com.example.spanienakanapie.model.BottomNavItem
 
 
@@ -48,6 +49,9 @@ fun Navigation() {
         }
         Screen.Register.route ->{
             bottomBarState.value = false
+        }
+        Screen.Home.route ->{
+            bottomBarState.value = true
         }
     }
 
@@ -84,13 +88,16 @@ modifier = Modifier.fillMaxSize()
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Screen.Login.route
+                startDestination = Screen.Home.route
             ) {
                 composable(Screen.Login.route) {
                     LoginScreen(navController)
                 }
                 composable(Screen.Register.route){
                     RegistrationScreen(navController)
+                }
+                composable(Screen.Home.route){
+                    HomeScreen()
                 }
 
 

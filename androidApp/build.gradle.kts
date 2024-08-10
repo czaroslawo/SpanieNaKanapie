@@ -101,7 +101,11 @@ android {
         //mapBox
         implementation("com.mapbox.maps:android:11.5.0")
         implementation("com.mapbox.extension:maps-compose:11.5.0")
-
-
+        implementation("com.mapbox.search:autofill:2.3.0")
+        implementation("com.mapbox.search:discover:2.3.0")
+        implementation("com.mapbox.search:place-autocomplete:2.3.0")
+        implementation("com.mapbox.search:offline:2.3.0")
+        implementation("com.mapbox.search:mapbox-search-android:2.3.0")
+        implementation("com.mapbox.search:mapbox-search-android-ui:2.3.0")
     }
 }

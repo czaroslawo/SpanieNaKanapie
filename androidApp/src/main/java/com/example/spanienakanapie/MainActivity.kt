@@ -1,5 +1,6 @@
 package com.example.spanienakanapie
 
+
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -19,6 +20,9 @@ import com.example.spanienakanapie.viewmodels.MainViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapView
 
 
 class MainActivity : ComponentActivity() {
@@ -30,9 +34,18 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
+        val mapView = MapView(this)
+        mapView.mapboxMap.setCamera(
+            CameraOptions.Builder()
+                .center(Point.fromLngLat(-98.0, 39.5))
+                .pitch(0.0)
+                .zoom(2.0)
+                .bearing(0.0)
+                .build()
+        )
         setContent {
             AppTheme{
-                MainActivityScreen()
+                MainActivityScreen(mapView = mapView)
             }
 
         }
@@ -45,7 +58,7 @@ class MainActivity : ComponentActivity() {
     ExperimentalAnimationApi::class,
     ExperimentalFoundationApi::class
 )
-fun MainActivityScreen(viewModel: MainViewModel = viewModel()) {
+fun MainActivityScreen(viewModel: MainViewModel = viewModel(), mapView: MapView) {
     val state by viewModel.state.collectAsState()
 
     AppTheme {
