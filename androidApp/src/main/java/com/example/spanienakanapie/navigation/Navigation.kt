@@ -28,8 +28,10 @@ import com.example.spanienakanapie.authorization.LoginScreen
 import com.example.spanienakanapie.authorization.RegistrationScreen
 import com.example.spanienakanapie.home.HomeScreen
 import com.example.spanienakanapie.model.BottomNavItem
+import com.mapbox.maps.MapboxExperimental
 
 
+@OptIn(MapboxExperimental::class)
 @ExperimentalLayoutApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
@@ -58,34 +60,34 @@ fun Navigation() {
 Column(
 modifier = Modifier.fillMaxSize()
 ) {
-    Scaffold(
-        bottomBar = {
-            BottomNavigationBar(
-                navController = navController,
-                onItemClick = {
-                    navController.navigate(it.route)
-                },
-                items = listOf(
-                    BottomNavItem(
-                        name = "Home",
-                        route = "Home",
-                        icon = Icons.Default.Home
-                    ),
-                    BottomNavItem(
-                        name = "Settings",
-                        route = "Settings",
-                        icon = Icons.Default.Settings
-                    ),
-                ),
-                bottomBarState = bottomBarState
-            )
-        }
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .padding(innerPadding)
-                .consumeWindowInsets(WindowInsets(top = innerPadding.calculateTopPadding()))
-        ) {
+//    Scaffold(
+//        bottomBar = {
+//            BottomNavigationBar(
+//                navController = navController,
+//                onItemClick = {
+//                    navController.navigate(it.route)
+//                },
+//                items = listOf(
+//                    BottomNavItem(
+//                        name = "Home",
+//                        route = "Home",
+//                        icon = Icons.Default.Home
+//                    ),
+//                    BottomNavItem(
+//                        name = "Settings",
+//                        route = "Settings",
+//                        icon = Icons.Default.Settings
+//                    ),
+//                ),
+//                bottomBarState = bottomBarState
+//            )
+//        }
+//    ) { innerPadding ->
+//        Box(
+//            modifier = Modifier
+//                .padding(innerPadding)
+//                .consumeWindowInsets(WindowInsets(top = innerPadding.calculateTopPadding()))
+//        ) {
             NavHost(
                 navController = navController,
                 startDestination = Screen.Home.route
@@ -105,5 +107,4 @@ modifier = Modifier.fillMaxSize()
             }
         }
     }
-}
-}
+
