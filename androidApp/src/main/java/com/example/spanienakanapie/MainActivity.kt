@@ -35,6 +35,8 @@ import com.example.spanienakanapie.navigation.Screen
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
+import androidx.compose.material3.NavigationBar
+import androidx.compose.ui.platform.LocalView
 
 
 class MainActivity : ComponentActivity() {
@@ -75,16 +77,13 @@ fun MainActivityScreen(viewModel: MainViewModel = viewModel(), mapView: MapView)
 
     AppTheme {
         if (!state.loggedIn) {
-            Log.d("Login status", "Logout")
-            LoginScreen(navController = rememberNavController(), onClickToRegister = {Log.d("chuj", "chuj")})
+            LoginScreen(navController = rememberNavController(), onClickToRegister = {})
         } else {
-            Log.d("Login status", "Logged in!")
             Scaffold(
                 bottomBar = {
-                    Log.d("shouldShow" , shouldShowBottomBar(navController = rememberNavController()).toString())
-
                     if (!shouldShowBottomBar(navController = rememberNavController())) {
-                        BottomNavigationBar(rememberNavController())
+//                        BottomNavigationBar(rememberNavController())
+
                     }
                 }
             ) {

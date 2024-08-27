@@ -107,5 +107,8 @@ android {
         implementation("com.mapbox.search:offline:2.3.0")
         implementation("com.mapbox.search:mapbox-search-android:2.3.0")
         implementation("com.mapbox.search:mapbox-search-android-ui:2.3.0")
+
+
+
     }
 }

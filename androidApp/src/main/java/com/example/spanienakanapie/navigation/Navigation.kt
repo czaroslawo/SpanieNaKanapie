@@ -1,6 +1,8 @@
 package com.example.spanienakanapie.navigation
 
+import android.app.Activity
 import android.util.Log
+import android.view.WindowInsetsController
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -18,10 +20,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -48,11 +56,20 @@ import com.mapbox.maps.MapboxExperimental
 @Composable
 fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
 
+
     val state by viewModel.state.collectAsState()
     val navController = rememberNavController()
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
+    val window = (LocalContext.current as Activity).window
+    val instetsController = WindowCompat.getInsetsController(window, LocalView.current)
+
+    instetsController.apply {
+        hide(WindowInsetsCompat.Type.systemBars())
+        systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE//to mi przeładowywuje całą aktywność tak nie może zostać no i czarny pasek do góry fajnie jakbyu nie był czarnmy
+        //musze sie pobawić jezcze z tymi system barami ale usuneło to ten padding więc małe zwycięswto!!!!
+    }
 
     when (navBackStackEntry?.destination?.route) {
         Screen.Login.route -> {
@@ -75,7 +92,7 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
             Scaffold(
                 bottomBar = {
                         if(bottomBarState.value){
-                            BottomNavigationBar(rememberNavController())
+                            BottomNavigationBar(navController)
                         }
                 }
             ) {innerPadding->
@@ -84,6 +101,7 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
                     startDestination = if (state.loggedIn) Screen.Home.route else "auth",
                     modifier = Modifier.padding(innerPadding)
                 ) {
+                    Log.d("padding", innerPadding.toString())
                     navigation(startDestination = Screen.Login.route, route = "auth") {
                         composable(Screen.Login.route) {
                             LoginScreen(navController) {
