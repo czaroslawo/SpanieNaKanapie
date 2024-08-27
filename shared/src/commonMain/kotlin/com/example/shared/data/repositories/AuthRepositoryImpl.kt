@@ -17,15 +17,14 @@ class AuthRepositoryImpl(
     override suspend fun login(loginParams: LoginParams): Resource<Unit> {
         return try {
             val result = authService.login(loginParams)
-            sharedSettingsHelper.authToken = result?.authToken
-            Resource.Success(Unit)
-        } catch (e: IOException) {
-            Resource.Error("${e.message}")
-        } catch (e: EOFException) {
-            Resource.Error("${e.message}")
-        } catch (e: Exception) {
-            Resource.Error("${e.message}")
-
+            if(result?.authToken != null){
+                sharedSettingsHelper.authToken = result.authToken
+                Resource.Success(Unit)
+            }else{
+                Resource.Error("Authentication failed: No token received")
+            }
+        } catch (e: EOFException){
+            Resource.Error("Unexpected end of input: ${e.message}")
         }
     }
 
@@ -33,15 +32,15 @@ class AuthRepositoryImpl(
     override suspend fun register(registerParams: RegisterParams): Resource<Unit> {
         return try {
             val result = authService.register(registerParams)
-            sharedSettingsHelper.authToken = result.authToken
-            Resource.Success(Unit)
-        } catch (e: IOException) {
-            Resource.Error("${e.message}")
-        } catch (e: EOFException) {
-            Resource.Error("${e.message}")
-        } catch (e: Exception) {
-            Resource.Error("${e.message}")
+            if(result.authToken != null){
+                sharedSettingsHelper.authToken = result.authToken
+                Resource.Success(Unit)
+            }else{
+                Resource.Error("")
+            }
 
+        } catch (e: EOFException){
+            Resource.Error("Unexpected end of input: ${e.message}")
         }
     }
 

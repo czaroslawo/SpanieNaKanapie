@@ -60,7 +60,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: AuthViewModel = viewModel()) {
+    viewModel: AuthViewModel = viewModel(),
+    onClickToRegister: () -> Unit ) {
 
     val state by viewModel.state.collectAsState()
 
@@ -87,7 +88,8 @@ fun LoginScreen(
             if (state.event is Event.NavigateEvent) {
                 Log.d("Direct Check", "NavigateEvent detected: ${(state.event as Event.NavigateEvent).route}")
                 navController.navigate((state.event as Event.NavigateEvent).route)
-            } else if (state.event is Event.SnackbarEvent) {
+            }
+            else if (state.event is Event.SnackbarEvent) {
                 Log.d("Direct Check", "SnackbarEvent detected: ${(state.event as Event.SnackbarEvent).message}")
                 launch {
                     snackBarsState.showSnackbar((state.event as Event.SnackbarEvent).message)
@@ -218,7 +220,8 @@ fun LoginScreen(
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.primary,
                                 modifier = Modifier
-                                    .clickable { navController.navigate(Screen.Register.route) })
+                                    .clickable { navController.navigate(Screen.Register.route)
+                                      })
 
                         }
 
@@ -236,5 +239,5 @@ fun LoginScreen(
 @Composable
 @ExperimentalMaterial3Api
 fun LoginScreenPreview() {
-    LoginScreen(navController = rememberNavController(), viewModel = AuthViewModel())
+    LoginScreen(navController = rememberNavController(), viewModel = AuthViewModel(), onClickToRegister = {})
 }

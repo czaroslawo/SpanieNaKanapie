@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             AppTheme{
-                MainActivityScreen(mapView = mapView)
+                Navigation(mapView = mapView)
             }
 
         }
@@ -76,12 +76,13 @@ fun MainActivityScreen(viewModel: MainViewModel = viewModel(), mapView: MapView)
     AppTheme {
         if (!state.loggedIn) {
             Log.d("Login status", "Logout")
-            LoginScreen(navController = rememberNavController())
+            LoginScreen(navController = rememberNavController(), onClickToRegister = {Log.d("chuj", "chuj")})
         } else {
             Log.d("Login status", "Logged in!")
             Scaffold(
                 bottomBar = {
                     Log.d("shouldShow" , shouldShowBottomBar(navController = rememberNavController()).toString())
+
                     if (!shouldShowBottomBar(navController = rememberNavController())) {
                         BottomNavigationBar(rememberNavController())
                     }
@@ -89,7 +90,7 @@ fun MainActivityScreen(viewModel: MainViewModel = viewModel(), mapView: MapView)
             ) {
                 Log.d("padding value", Modifier.padding(it).toString())
                 Column (modifier = Modifier.padding(it)){
-                    Navigation()
+//                    Navigation()
 
                 }
 
