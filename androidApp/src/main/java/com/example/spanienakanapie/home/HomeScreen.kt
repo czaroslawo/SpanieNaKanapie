@@ -1,6 +1,7 @@
 package com.example.spanienakanapie.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,23 +21,24 @@ import com.mapbox.maps.extension.compose.animation.viewport.MapViewportState
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen() {
-    Scaffold() {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = it.calculateBottomPadding())){
-            MapboxMap(
-                Modifier.fillMaxSize(),
-                mapViewportState = MapViewportState().apply {
-                    setCameraOptions {
-                        zoom(2.0)
-                        center(Point.fromLngLat(-98.0, 39.5))
-                        pitch(0.0)
-                        bearing(0.0)
-                    }
-                },
-            )
-        }
-    }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        contentWindowInsets = WindowInsets(0.dp),
+        content = { innerPadding ->
+            Column(modifier = Modifier.padding(innerPadding)){
+                MapboxMap(
+                    modifier = Modifier.fillMaxSize(),
+                    mapViewportState = MapViewportState().apply {
+                        setCameraOptions {
+                            zoom(2.0)
+                            center(Point.fromLngLat(-98.0, 39.5))
+                            pitch(0.0)
+                            bearing(0.0)
+                        }
+                    },
+                )
+            }
+        })
 }
 @Preview
 @MapboxExperimental

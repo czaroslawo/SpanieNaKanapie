@@ -27,6 +27,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -40,6 +41,7 @@ import androidx.navigation.navigation
 import com.example.spanienakanapie.authorization.LoginScreen
 import com.example.spanienakanapie.authorization.RegistrationScreen
 import com.example.spanienakanapie.home.HomeScreen
+import com.example.spanienakanapie.itinerary.ItineraryScreen
 import com.example.spanienakanapie.model.BottomNavItem
 import com.example.spanienakanapie.shouldShowBottomBar
 import com.example.spanienakanapie.ui.theme.AppTheme
@@ -60,36 +62,29 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
     val state by viewModel.state.collectAsState()
     val navController = rememberNavController()
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
+//    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    val window = (LocalContext.current as Activity).window
-    val instetsController = WindowCompat.getInsetsController(window, LocalView.current)
 
-    instetsController.apply {
-        hide(WindowInsetsCompat.Type.systemBars())
-        systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE//to mi przeładowywuje całą aktywność tak nie może zostać no i czarny pasek do góry fajnie jakbyu nie był czarnmy
-        //musze sie pobawić jezcze z tymi system barami ale usuneło to ten padding więc małe zwycięswto!!!!
-    }
-
-    when (navBackStackEntry?.destination?.route) {
-        Screen.Login.route -> {
-            bottomBarState.value = false
-        }
-
-        Screen.Register.route -> {
-            bottomBarState.value = false
-        }
-
-        Screen.Home.route -> {
-            bottomBarState.value = true
-        }
-    }
+//    when (navBackStackEntry?.destination?.route) {
+//        Screen.Login.route -> {
+//            bottomBarState.value = false
+//        }
+//
+//        Screen.Register.route -> {
+//            bottomBarState.value = false
+//        }
+//
+//        Screen.Home.route -> {
+//            bottomBarState.value = true
+//        }
+//    }
 
 
 
 
     AppTheme {
             Scaffold(
+                contentWindowInsets = WindowInsets(0.dp),
                 bottomBar = {
                         if(bottomBarState.value){
                             BottomNavigationBar(navController)
@@ -119,7 +114,7 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
                         HomeScreen()
                     }
                     composable(Screen.Itinerary.route) {
-
+                        ItineraryScreen()
                     }
 
 
