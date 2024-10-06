@@ -43,7 +43,6 @@ import com.example.spanienakanapie.authorization.RegistrationScreen
 import com.example.spanienakanapie.home.HomeScreen
 import com.example.spanienakanapie.itinerary.ItineraryScreen
 import com.example.spanienakanapie.model.BottomNavItem
-import com.example.spanienakanapie.shouldShowBottomBar
 import com.example.spanienakanapie.ui.theme.AppTheme
 import com.example.spanienakanapie.viewmodels.MainViewModel
 import com.mapbox.maps.MapView
@@ -62,22 +61,27 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
     val state by viewModel.state.collectAsState()
     val navController = rememberNavController()
     val bottomBarState = rememberSaveable { (mutableStateOf(true)) }
-//    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination?.route
 
 
-//    when (navBackStackEntry?.destination?.route) {
-//        Screen.Login.route -> {
-//            bottomBarState.value = false
-//        }
-//
-//        Screen.Register.route -> {
-//            bottomBarState.value = false
-//        }
-//
-//        Screen.Home.route -> {
-//            bottomBarState.value = true
-//        }
-//    }
+    when (navBackStackEntry?.destination?.route) {
+        Screen.Login.route -> {
+            bottomBarState.value = false
+        }
+
+        Screen.Register.route -> {
+            bottomBarState.value = false
+        }
+
+        Screen.Home.route -> {
+            bottomBarState.value = true
+        }
+
+        Screen.Itinerary.route ->{
+            bottomBarState.value = true
+        }
+    }
 
 
 
@@ -86,9 +90,11 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
             Scaffold(
                 contentWindowInsets = WindowInsets(0.dp),
                 bottomBar = {
-                        if(bottomBarState.value){
+
+                        if (bottomBarState.value) {
                             BottomNavigationBar(navController)
                         }
+
                 }
             ) {innerPadding->
                 NavHost(
@@ -99,21 +105,27 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
                     Log.d("padding", innerPadding.toString())
                     navigation(startDestination = Screen.Login.route, route = "auth") {
                         composable(Screen.Login.route) {
+                            bottomBarState.value = false
                             LoginScreen(navController) {
                                 navController.navigate(Screen.Home.route) {
                                     popUpTo("auth") { inclusive = true }
+
                                 }
+
                             }
                         }
                         composable(Screen.Register.route) {
+                            bottomBarState.value = false
                             RegistrationScreen(navController)
 
                         }
                     }
                     composable(Screen.Home.route) {
+                        bottomBarState.value = true
                         HomeScreen()
                     }
                     composable(Screen.Itinerary.route) {
+                        bottomBarState.value = true
                         ItineraryScreen()
                     }
 

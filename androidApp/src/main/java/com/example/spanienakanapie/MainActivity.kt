@@ -1,6 +1,7 @@
 package com.example.spanienakanapie
 
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -45,12 +47,22 @@ import com.mapbox.maps.MapView
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Surface
 import androidx.compose.ui.platform.LocalView
+import com.mapbox.android.core.permissions.PermissionsListener
+import com.mapbox.android.core.permissions.PermissionsManager
+import android.Manifest
 
 
+
+@OptIn(ExperimentalFoundationApi::class)
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalLayoutApi::class,
         ExperimentalAnimationApi::class,
         ExperimentalFoundationApi::class,
+        ExperimentalMaterial3Api::class
+    )
+    lateinit var permissionsManager: PermissionsManager
+
+    @OptIn(ExperimentalLayoutApi::class, ExperimentalAnimationApi::class,
         ExperimentalMaterial3Api::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +71,28 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.auto(Color.TRANSPARENT, Color.TRANSPARENT)
         )
         super.onCreate(savedInstanceState)
+
+        val locationPermissionRequest = registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
+                    // Precise location access granted.
+                }
+                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                    // Only approximate location access granted.
+                } else -> {
+                // No location access granted.
+            }
+            }
+        }
+
+        locationPermissionRequest.launch(arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION))
+
+
+
         //WindowCompat.setDecorFitsSystemWindows(window, false)
         val mapView = MapView(this)
         mapView.mapboxMap.setCamera(
@@ -85,7 +119,12 @@ class MainActivity : ComponentActivity() {
 
         }
     }
+
 }
+
+
+
+
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class,
