@@ -58,6 +58,7 @@ fun HomeScreen() {
     val mapViewportState = rememberMapViewportState(){
         setCameraOptions(){
             pitch(0.0)
+            zoom(14.0)
 
         }
     }
@@ -77,9 +78,9 @@ fun HomeScreen() {
 //    val statusBar = WindowInsets.statusBars.getTop(density = density)
 
 
-//    LaunchedEffect(true){
-//        val response = placeAutocomplete.suggestions()
-//    }
+    LaunchedEffect(true){
+        val response = placeAutocomplete.suggestions(place)
+    }
     
     
 
@@ -121,7 +122,8 @@ fun HomeScreen() {
                             followPuckViewportStateOptions = FollowPuckViewportStateOptions.Builder()
                                 .bearing(FollowPuckViewportStateBearing.Constant(0.0))
                                 .padding(EdgeInsets(200.0 * density, 0.0, 0.0, 0.0))
-                                .pitch(0.0)
+                                .pitch(5.0)
+                                .zoom(15.0)
                                 .build(),
                         ) { success ->
 
@@ -132,18 +134,22 @@ fun HomeScreen() {
                 TextField(modifier = Modifier
                     .fillMaxWidth()
                     .systemBarsPadding()
-                    .padding(horizontal = 10.dp)
-                    .border(
-                        1.dp,
-                        MaterialTheme.colorScheme.primary,
-                        //shape = RoundedCornerShape(30.dp)
-                    ),
+                    .padding(horizontal = 10.dp),
+//                    .border(
+//                        0.dp,
+//                        MaterialTheme.colorScheme.bac,
+////                        shape = RoundedCornerShape(30.dp)
+//                    ),
                     //.clip(RoundedCornerShape(30.dp)),
                     value = place,
                     onValueChange = {place = it },
-                    label = { Text(text = stringResource(R.string.find_place))},
-                    colors = TextFieldDefaults.textFieldColors(containerColor = MaterialTheme.colorScheme.background),
-                    shape = TextFieldDefaults.filledShape)
+                    placeholder = { Text(text = stringResource(R.string.find_place))},
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = MaterialTheme.colorScheme.background,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent),
+                    shape = RoundedCornerShape(30.dp)
+                )
             }})
 }
 @Preview
