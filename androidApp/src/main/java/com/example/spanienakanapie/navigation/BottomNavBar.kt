@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
@@ -44,7 +45,9 @@ fun BottomNavigationBar(
     val backstackEntry = navController.currentBackStackEntryAsState()
     val currentDestination = backstackEntry.value?.destination
 
-    NavigationBar {
+    NavigationBar (
+        containerColor = MaterialTheme.colorScheme.background
+    ){
         screens.forEach{ screen ->
             NavigationBarItem(
                 selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
@@ -56,7 +59,7 @@ fun BottomNavigationBar(
                     restoreState = true
                 } },
                 icon = { Icon(screen.icon, contentDescription = null)},
-                label = {Text(screen.title)}
+                label = {Text(screen.title)},
             )
             
         }

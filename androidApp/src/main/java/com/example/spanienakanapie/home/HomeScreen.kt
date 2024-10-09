@@ -1,9 +1,12 @@
 package com.example.spanienakanapie.home
 
 import android.graphics.Rect
+import android.util.Log
 import android.view.RoundedCorner
 import android.view.View
 import android.view.Window
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -17,10 +20,17 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarColors
+import androidx.compose.material3.SearchBarDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
@@ -46,7 +56,11 @@ import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateBearing
 import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateOptions
 import com.mapbox.search.autocomplete.PlaceAutocomplete
+import com.mapbox.search.ui.view.CommonSearchViewConfiguration
+import com.mapbox.search.ui.view.DistanceUnitType
 import java.util.Calendar
+import com.mapbox.search.ui.view.SearchResultsView
+import kotlinx.coroutines.launch
 
 
 @MapboxExperimental
@@ -68,19 +82,29 @@ fun HomeScreen() {
     var place by remember{
         mutableStateOf("")
     }
-//    val rectangle = Rect()
-//    val window: Window = getWindow()
-//    window.decorView.getWindowVisibleDisplayFrame(rectangle)
-//    val statusBarHeight: Int = rectangle.top
-//    val contentViewTop = window.findViewById<View>(Window.ID_ANDROID_CONTENT).top
-//    val titleBarHeight = contentViewTop - statusBarHeight
-//
-//    val statusBar = WindowInsets.statusBars.getTop(density = density)
-
-
-    LaunchedEffect(true){
-        val response = placeAutocomplete.suggestions(place)
+    var expanded by remember {
+        mutableStateOf(false)
     }
+    val paddingHorizontal by animateDpAsState(
+        targetValue = if (!expanded) 10.dp else 0.dp,
+        animationSpec = tween(durationMillis = 5000)
+    )
+
+
+
+
+    LaunchedEffect(place){
+        launch {
+            val response = placeAutocomplete.suggestions(place)
+            response.onValue {
+                Log.d("lista", it.toString())
+            }
+
+        }
+
+    }
+
+
     
     
 
@@ -131,25 +155,72 @@ fun HomeScreen() {
 
                     }
                 }
-                TextField(modifier = Modifier
-                    .fillMaxWidth()
-                    .systemBarsPadding()
-                    .padding(horizontal = 10.dp),
+//                Surface(
+//                    shape = RoundedCornerShape(8.dp), // Define your rounded corners here
+//                    shadowElevation = 8.dp, // Define the desired shadow elevation here
+//                    color = MaterialTheme.colorScheme.background // Match background color if needed
+//                ) {
+                SearchBar(
+                    inputField = {
+                             SearchBarDefaults.InputField(
+                                 query = place,
+                                 onQueryChange = {place = it},
+                                 onSearch = {expanded = false},
+                                 expanded = expanded,
+                                 onExpandedChange = {expanded = it},
+                                 placeholder = { Text(text = stringResource(R.string.find_place))},
+                                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null)},
+//                                 modifier = Modifier
+//                                     .fillMaxWidth()
+//                                     .padding(horizontal = 10.dp)
+
+
+                             )
+                    },
+                    expanded = expanded,
+                    onExpandedChange = {expanded = it},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .then(
+                            if (!expanded){
+                                Modifier
+                                    .systemBarsPadding()
+                                    .padding(horizontal = 10.dp)
+                            }else{
+                                Modifier.clip(RoundedCornerShape(8.dp))
+
+                            }
+                        ),
+                        //.clip(RoundedCornerShape(30.dp)),
+                    colors = SearchBarColors(containerColor = MaterialTheme.colorScheme.background, dividerColor = MaterialTheme.colorScheme.primary),
+                    shadowElevation = 4.dp,
+//                    shape = RoundedCornerShape(8.dp) ,
+//                if (expanded) else SearchBarDefaults.inputFieldShape
+                    content = {
+
+
+                    }
+                )
+//                }
 //                    .border(
 //                        0.dp,
 //                        MaterialTheme.colorScheme.bac,
 ////                        shape = RoundedCornerShape(30.dp)
 //                    ),
                     //.clip(RoundedCornerShape(30.dp)),
-                    value = place,
-                    onValueChange = {place = it },
-                    placeholder = { Text(text = stringResource(R.string.find_place))},
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = MaterialTheme.colorScheme.background,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent),
-                    shape = RoundedCornerShape(30.dp)
-                )
+//                    value = place,
+//                    onValueChange = {place = it },
+//                    placeholder = { Text(text = stringResource(R.string.find_place))},
+//                    colors = TextFieldDefaults.textFieldColors(
+//                        containerColor = MaterialTheme.colorScheme.background,
+//                        focusedIndicatorColor = Color.Transparent,
+//                        unfocusedIndicatorColor = Color.Transparent),
+//                    shape = RoundedCornerShape(30.dp)
+//                )
+                    SearchResultsView.Configuration(
+                        CommonSearchViewConfiguration(DistanceUnitType.METRIC)
+                    )
+
             }})
 }
 @Preview
