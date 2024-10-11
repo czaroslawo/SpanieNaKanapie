@@ -1,6 +1,7 @@
 package com.example.spanienakanapie.home
 
 import android.graphics.Rect
+import android.location.Address
 import android.util.Log
 import android.view.RoundedCorner
 import android.view.View
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -44,6 +46,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.shared.data.models.SugestetdPlace
 import com.example.spanienakanapie.R
 import com.mapbox.maps.EdgeInsets
 import com.mapbox.maps.MapboxExperimental
@@ -56,11 +59,16 @@ import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateBearing
 import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateOptions
 import com.mapbox.search.autocomplete.PlaceAutocomplete
+import com.mapbox.search.autocomplete.PlaceAutocompleteSuggestion
+import com.mapbox.search.autocomplete.PlaceAutocompleteType
 import com.mapbox.search.ui.view.CommonSearchViewConfiguration
 import com.mapbox.search.ui.view.DistanceUnitType
 import java.util.Calendar
 import com.mapbox.search.ui.view.SearchResultsView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @MapboxExperimental
@@ -77,8 +85,8 @@ fun HomeScreen() {
         }
     }
     val density = LocalDensity.current.density
-    val mapboxAccesToken = stringResource(R.string.mapbox_access_token)
     val placeAutocomplete = PlaceAutocomplete.create()
+
     var place by remember{
         mutableStateOf("")
     }
@@ -89,16 +97,20 @@ fun HomeScreen() {
         targetValue = if (!expanded) 10.dp else 0.dp,
         animationSpec = tween(durationMillis = 5000)
     )
+    var suggestions by remember {
+        mutableStateOf<List<PlaceAutocompleteSuggestion>>(emptyList())
+    }
+
+
 
 
 
 
     LaunchedEffect(place){
-        launch {
             val response = placeAutocomplete.suggestions(place)
             response.onValue {
                 Log.d("lista", it.toString())
-            }
+                 suggestions = it
 
         }
 
@@ -155,11 +167,7 @@ fun HomeScreen() {
 
                     }
                 }
-//                Surface(
-//                    shape = RoundedCornerShape(8.dp), // Define your rounded corners here
-//                    shadowElevation = 8.dp, // Define the desired shadow elevation here
-//                    color = MaterialTheme.colorScheme.background // Match background color if needed
-//                ) {
+
                 SearchBar(
                     inputField = {
                              SearchBarDefaults.InputField(
@@ -170,11 +178,6 @@ fun HomeScreen() {
                                  onExpandedChange = {expanded = it},
                                  placeholder = { Text(text = stringResource(R.string.find_place))},
                                  leadingIcon = { Icon(Icons.Default.Search, contentDescription = null)},
-//                                 modifier = Modifier
-//                                     .fillMaxWidth()
-//                                     .padding(horizontal = 10.dp)
-
-
                              )
                     },
                     expanded = expanded,
@@ -182,41 +185,30 @@ fun HomeScreen() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .then(
-                            if (!expanded){
+                            if (!expanded) {
                                 Modifier
                                     .systemBarsPadding()
                                     .padding(horizontal = 10.dp)
-                            }else{
+                            } else {
                                 Modifier.clip(RoundedCornerShape(8.dp))
 
                             }
                         ),
-                        //.clip(RoundedCornerShape(30.dp)),
                     colors = SearchBarColors(containerColor = MaterialTheme.colorScheme.background, dividerColor = MaterialTheme.colorScheme.primary),
                     shadowElevation = 4.dp,
-//                    shape = RoundedCornerShape(8.dp) ,
-//                if (expanded) else SearchBarDefaults.inputFieldShape
                     content = {
-
+                        LazyColumn {
+                            items(if (suggestions.isEmpty()) 0 else suggestions.size){suggestion ->
+                                SearchSuggestionItem(place = SugestetdPlace(
+                                    suggestions[suggestion].name,
+                                    suggestions[suggestion].formattedAddress,
+                                    suggestions[suggestion].distanceMeters?.div(1000)?.toInt()))
+                            }
+                        }
 
                     }
                 )
-//                }
-//                    .border(
-//                        0.dp,
-//                        MaterialTheme.colorScheme.bac,
-////                        shape = RoundedCornerShape(30.dp)
-//                    ),
-                    //.clip(RoundedCornerShape(30.dp)),
-//                    value = place,
-//                    onValueChange = {place = it },
-//                    placeholder = { Text(text = stringResource(R.string.find_place))},
-//                    colors = TextFieldDefaults.textFieldColors(
-//                        containerColor = MaterialTheme.colorScheme.background,
-//                        focusedIndicatorColor = Color.Transparent,
-//                        unfocusedIndicatorColor = Color.Transparent),
-//                    shape = RoundedCornerShape(30.dp)
-//                )
+
                     SearchResultsView.Configuration(
                         CommonSearchViewConfiguration(DistanceUnitType.METRIC)
                     )
