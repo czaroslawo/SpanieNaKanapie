@@ -23,9 +23,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -178,6 +181,11 @@ fun HomeScreen() {
                                  onExpandedChange = {expanded = it},
                                  placeholder = { Text(text = stringResource(R.string.find_place))},
                                  leadingIcon = { Icon(Icons.Default.Search, contentDescription = null)},
+                                 trailingIcon = {
+                                     if(place.isNotEmpty()){
+                                         IconButton(onClick = {place = ""},
+                                             content = {Icon(Icons.Outlined.Cancel, contentDescription = null)})
+                                 } },
                              )
                     },
                     expanded = expanded,
@@ -199,10 +207,12 @@ fun HomeScreen() {
                     content = {
                         LazyColumn {
                             items(if (suggestions.isEmpty()) 0 else suggestions.size){suggestion ->
+                                val distanceInMeters = suggestions[suggestion].distanceMeters
+                                val formattedDistance = formatDistance(distanceInMeters)
                                 SearchSuggestionItem(place = SugestetdPlace(
                                     suggestions[suggestion].name,
                                     suggestions[suggestion].formattedAddress,
-                                    suggestions[suggestion].distanceMeters?.div(1000)?.toInt()))
+                                    distance = formattedDistance))
                             }
                         }
 
@@ -214,6 +224,25 @@ fun HomeScreen() {
                     )
 
             }})
+}
+
+fun Double.format(digits: Int) = "%.${digits}f".format(this)
+fun formatDistance(distanceInMeters: Double?): String {
+    return when {
+        distanceInMeters == null -> ""
+        distanceInMeters >= 1000 && distanceInMeters < 10000 -> {
+            // Convert to km with one decimal place
+            "${(distanceInMeters / 1000.0).format(1)} km"
+        }
+        distanceInMeters >= 10000 -> {
+            // Convert to km without decimal places
+            "${distanceInMeters.toInt() / 1000} km"
+        }
+        else -> {
+            // Round to the nearest 50 meters
+            "${(distanceInMeters.toInt() / 50) * 50} m"
+        }
+    }
 }
 @Preview
 @MapboxExperimental

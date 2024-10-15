@@ -30,25 +30,33 @@ fun SearchSuggestionItem(
     Row(verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .height(50.dp)) {
+            .height(70.dp)) {
         Icon(Icons.Outlined.LocationOn, contentDescription = null,
             modifier = Modifier.padding(start = 16.dp, end = 25.dp))
-        Column {
+        Column(modifier = Modifier.weight(3f)) {
             Text(text = place.name,
                 fontSize = 16.sp,
                 modifier = Modifier.padding( bottom = 2.dp),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis)
-            place.address?.let { Text(text = it, fontSize = 12.sp) }
+            place.address?.let {
+                Text(text = it,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis) }
         }
         Box(contentAlignment = Alignment.CenterEnd,
             modifier = Modifier.padding(start = 16.dp, end = 16.dp)
                 .weight(1f)){
-            Text(text = "${place.distance}km",
-                fontSize = 12.sp,
-                color = MaterialTheme.colorScheme.primary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis)
+            place.distance?.let {
+                Text(text = it,
+        //            if(place.distance != null) "${place.distance} km" else "",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.primary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis)
+            }
         }
 
     }
@@ -57,5 +65,5 @@ fun SearchSuggestionItem(
 @Preview
 @Composable
 fun SearchSuggestionsItemPreview(){
-    SearchSuggestionItem(SugestetdPlace("Koloseum", "Piazza del Colloseo", 1528))
+    SearchSuggestionItem(SugestetdPlace("Koloseum", "Piazza del Colloseooooooooooooooooooooooooooooo", "1528"))
 }
