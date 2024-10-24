@@ -5,4 +5,7 @@
     <string name="login_filed">Logowanie się nie powiodło</string>
     <string name="find_place">Znajdź miejsce</string>
     <string name="create_article">Stwórz artykuł</string>
+    <string name="article_title">Tytuł artykułu</string>
+    <string name="pick_the_location">Wybierz miejsce</string>
+    <string name="location_address">Adres twojego miejsca</string>
 </resources>

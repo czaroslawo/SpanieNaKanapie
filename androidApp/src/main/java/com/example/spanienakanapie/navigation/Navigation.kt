@@ -43,6 +43,7 @@ import com.example.spanienakanapie.authorization.RegistrationScreen
 import com.example.spanienakanapie.home.HomeScreen
 import com.example.spanienakanapie.itinerary.ItineraryScreen
 import com.example.spanienakanapie.itinerary.NewPostScreen
+import com.example.spanienakanapie.itinerary.PickLocationScreen
 import com.example.spanienakanapie.model.BottomNavItem
 import com.example.spanienakanapie.ui.theme.AppTheme
 import com.example.spanienakanapie.viewmodels.MainViewModel
@@ -133,7 +134,12 @@ fun Navigation(viewModel: MainViewModel = viewModel(), mapView: MapView) {
                         ItineraryScreen(navController)
                     }
                     composable(Screen.NewPost.route){
-                        NewPostScreen()
+                        bottomBarState.value = false
+                        NewPostScreen(navController)
+                    }
+                    composable(Screen.PickLocation.route){
+                        bottomBarState.value = false
+                        PickLocationScreen()
                     }
 
 

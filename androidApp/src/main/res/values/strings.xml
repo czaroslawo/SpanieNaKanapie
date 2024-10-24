@@ -4,4 +4,7 @@
     <string name="login_filed">Login filed</string>
     <string name="find_place">Find place</string>
     <string name="create_article">Create article</string>
+    <string name="article_title">Article title</string>
+    <string name="pick_the_location">Pick the location</string>
+    <string name="location_address">Location address</string>
 </resources>
