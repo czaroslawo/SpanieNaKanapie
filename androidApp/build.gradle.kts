@@ -109,8 +109,8 @@ android {
         implementation("com.mapbox.search:mapbox-search-android-ui:2.1.0")
         implementation("com.mapbox.plugin:maps-scalebar:11.5.0")
 
-        //sun state calculate library
-        implementation("dev.jamesyox:kastro:0.3.0")
+
+      
 
 
 
