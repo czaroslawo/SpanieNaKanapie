@@ -1,6 +1,7 @@
 package com.example.spanienakanapie.itinerary
 
 import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTransformGestures
@@ -39,6 +40,7 @@ import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -48,6 +50,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -55,6 +58,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Velocity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.spanienakanapie.R
@@ -80,10 +84,14 @@ import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateBearing
 import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateOptions
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @OptIn(ExperimentalMaterial3Api::class, MapboxExperimental::class)
 @Composable
-fun NewPostScreen(navController: NavController) {
+fun NewPostScreen(navController: NavController,
+                  viewModel: PostViewModel = viewModel(LocalContext.current as ComponentActivity)) {
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     var titleValue by remember {
         mutableStateOf("")
@@ -91,8 +99,8 @@ fun NewPostScreen(navController: NavController) {
     var articleContentValue by remember {
         mutableStateOf("")
     }
-    var adressValue by remember {
-        mutableStateOf("")
+    var addressValue by remember {
+        mutableStateOf<String?>("")
     }
     val mapViewportState = rememberMapViewportState() {
         setCameraOptions() {
@@ -126,16 +134,7 @@ fun NewPostScreen(navController: NavController) {
     }
 
 
-    LaunchedEffect( true) {
-        launch{
-            val cameraChange = CameraChangedCallback{cameraChanged ->
-                if (true){
-                    Log.d("hasjkld", cameraChanged.toString())
-                }
-            }
-        }
 
-    }
 
 
     Scaffold(topBar = {
@@ -187,124 +186,33 @@ fun NewPostScreen(navController: NavController) {
                         .padding(vertical = 16.dp)
                 )
 
+
+
                 Button(onClick = {navController.navigate(Screen.PickLocation.route)},
                     modifier = Modifier.fillMaxWidth()
                         ) {
                     Icon(Icons.Default.LocationOn, "")
                     Text(text = stringResource(R.string.pick_the_location))
-
                 }
 
-                OutlinedTextField(value = adressValue,
-                    onValueChange = {adressValue = it},
-                    enabled = if (adressValue.isEmpty()) false else true,
-                    placeholder = {Text(stringResource(R.string.location_address))})
-//                Box( modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(450.dp)
-//
-//
-//                ){
-//                    Card(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(450.dp)
-////                            .pointerInput(scrollState){
-////                                detectDragGestures(
-////                                    onDragStart = {dragState = true},
-////                                    onDragEnd = {dragState = false},
-////                                ) { _, _->  }
-////                            }
-//
-//
-//                    ) {
-//                        MapboxMap(
-//                            modifier = Modifier
-//                                .fillMaxSize()
-//                                .pointerInput(Unit) {
-//                                    detectDragGestures(
-//                                        onDragStart = { dragState = true },
-//                                        onDragEnd = { dragState = false },
-//                                        onDrag = { change, _ ->
-////                                            Log.d("dragging", "drag")
-//                                            if (dragState) {
-//
-//                                            } else {
-//
-//                                            }
-//                                        }
-//                                    )
-//                                },
-////                                .pointerInput(Unit) {
-////                                    Log.d("drag", "chuj")
-////                                    awaitPointerEventScope {
-////                                        // we should wait for all new pointer events
-////                                        while (true) {
-////                                            awaitPointerEvent(pass = PointerEventPass.Initial)
-////                                                .changes
-////                                                .forEach(PointerInputChange::consume)
-////                                        }
-////                                    }
-////
-//////                                    detectVerticalDragGestures(
-//////                                        onDragStart = {dragState = true},
-//////                                        onDragEnd = {dragState = false},
-//////                                        onVerticalDrag = {_, dragAmount ->
-//////                                            Log.d("Amount", dragAmount.toString())
-//////                                            DragInteraction.Start
-//////
-//////
-//////                                        }
-//////                                    )
-////                                },
-//                            mapViewportState = mapViewportState,
-//                            compass = {
-//                                Compass(
-//                                    modifier = Modifier
-//                                        .height(0.dp)
-//                                        .width(0.dp)
-//                                )
-//                            },
-//                            scaleBar = {
-//                                ScaleBar(
-//                                    height = 0.dp,
-//                                    primaryColor = Color.Transparent,
-//                                    secondaryColor = Color.Transparent,
-//                                    textColor = Color.Transparent,
-//                                    borderWidth = 0.dp,
-//                                    textBorderWidth = 0.dp,
-//                                    textSize = 0.sp
-//                                )
-//                            }
-//
-//
-//                        ) {
-//                            MapEffect(Unit) { mapView ->
-//                                mapView.location.updateSettings {
-//                                    locationPuck = createDefault2DPuck(withBearing = true)
-//                                    enabled = true
-//                                    puckBearing = PuckBearing.COURSE
-//                                    puckBearingEnabled = true
-//                                }
-//
-//                                mapViewportState.transitionToFollowPuckState(
-//                                    followPuckViewportStateOptions = FollowPuckViewportStateOptions.Builder()
-//                                        .bearing(FollowPuckViewportStateBearing.Constant(0.0))
-//                                        .padding(EdgeInsets(200.0 * density, 0.0, 0.0, 0.0))
-//                                        .pitch(5.0)
-//                                        .zoom(15.0)
-//                                        .build(),
-//                                ) { success ->
-//
-//                                }
-//
-//                            }
-//                        }
-//
-//
-//                    }
-//
-//                }
+                Log.i("State: placeAddres", state.placeAddress.toString())
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical= 16.dp),
+                    value = state.placeAddress ?: "",
+                    onValueChange = { viewModel.setPlaceAddress(it) },
+                    enabled = !state.placeAddress.isNullOrEmpty(),
+                    placeholder = { Text(stringResource(R.string.location_address)) })
+
+                Box(modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.BottomEnd) {
+                    Button(onClick = { /*TODO*/ },
+                        modifier = Modifier.padding(vertical = 16.dp)) {
+                        Text(text = stringResource(id = R.string.confirm))
+                    }
+                }
+
 
             }
         }

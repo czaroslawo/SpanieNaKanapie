@@ -82,7 +82,7 @@ fun LoginScreen(
 
 
     LaunchedEffect(state.event) {
-        Log.d("Event", "LaunchedEffewct is triggered")
+        Log.d("Event", "LaunchedEffect is triggered")
         state.event?.consume {
             Log.d("Event", state.event.toString())
             if (state.event is Event.NavigateEvent) {

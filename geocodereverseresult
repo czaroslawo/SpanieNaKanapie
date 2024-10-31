@@ -1,0 +1,33 @@
+Reverse geocoding results: [
+	SearchResult(
+		requestOptions=RequestOptions(
+			query='16.929900,52.408108',
+			options=
+				SearchOptions(
+				proximity=Point{type=Point, bbox=null, coordinates=[16.92989985505625, 52.40810843867618]},
+				boundingBox=null,
+				countries=null,
+				fuzzyMatch=null,
+				languages=[Language(code='pl')],
+				limit=1,
+				types=null,
+				requestDebounce=null,
+				origin=Point{
+					type=Point,
+					bbox=null,
+					coordinates=[16.92989985505625, 52.40810843867618]},
+					navigationOptions=null,
+					routeOptions=null,
+					unsafeParameters=null,
+					ignoreIndexableRecords=false,
+					indexableRecordsDistanceThresholdMeters=null),
+					proximityRewritten=false, originRewritten=false,
+					endpoint='reverse',
+					sessionID='',
+					requestContext=
+					SearchRequestContext(
+						apiType=GEOCODING,
+						keyboardLocale=pl_PL,
+						screenOrientation=PORTRAIT,
+						responseUuid=)), id='address.3112560646567430', mapboxId='null', name='Ignacego Paderewskiego', matchingName=null, descriptionText=null, address=SearchAddress(houseNumber=9, street=Ignacego Paderewskiego, neighborhood=null, locality=null, postcode=61-770, place=Poznań, district=null, region=województwo wielkopolskie, country=Polska),
+		fullAddress=Ignacego Paderewskiego 9, 61-770 Poznań, województwo wielkopolskie, Polska, routablePoints=null, categories=null, makiIcon=null, coordinate=Point{type=Point, bbox=null, coordinates=[16.930112838745117, 52.40797424316406]}, accuracy=com.mapbox.search.result.ResultAccuracy$Rooftop@e770867, types=[ADDRESS], etaMinutes=null, metadata=SearchResultMetadata(extraData={iso_3166_1=pl, iso_3166_2=PL-30}, reviewCount=null, phone=null, website=null, averageRating=null, description=null, primaryPhotos=null, otherPhotos=null, openHours=null, parking=null, cpsJson=null, countryIso1=pl, countryIso2=PL-30), externalIDs={}, distanceMeters=20.810009253654535, serverIndex=0, indexableRecord=null)]
