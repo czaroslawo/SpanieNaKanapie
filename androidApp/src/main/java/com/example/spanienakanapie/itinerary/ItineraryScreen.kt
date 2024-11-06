@@ -22,10 +22,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.spanienakanapie.R
 import com.example.spanienakanapie.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +35,7 @@ import com.example.spanienakanapie.navigation.Screen
 fun ItineraryScreen(navController: NavController){
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text(text = "Places with community posts", color = MaterialTheme.colorScheme.primary) })
+            CenterAlignedTopAppBar(title = { Text(text = stringResource(R.string.places_with_community_posts), color = MaterialTheme.colorScheme.primary) })
         }
     ){
         Column(modifier = Modifier.padding(it)) {
@@ -41,7 +43,9 @@ fun ItineraryScreen(navController: NavController){
                 contentAlignment = Alignment.BottomEnd){
                 FloatingActionButton(modifier = Modifier.padding(end = 16.dp),
                     elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation(4.dp),
-                    onClick = { navController.navigate(Screen.NewPost.route) },
+                    onClick = { navController.navigate(Screen.NewPost.route){
+                        popUpTo(Screen.Itinerary.route)
+                    } },
                 ) {
                     Icon(Icons.Filled.Add, "Floating action button.")
                 }

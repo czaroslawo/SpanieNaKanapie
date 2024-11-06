@@ -9,4 +9,10 @@
     <string name="pick_the_location">Wybierz miejsce</string>
     <string name="location_address">Adres twojego miejsca</string>
     <string name="confirm">Zatwierdź</string>
+    <string name="dismiss">Odrzuć</string>
+    <string name="are_you_sure">Jesteś pewny?</string>
+    <string name="Every_user_will_see">Każdy użytkownik będzie mógł zobaczyć twój artykuł. Jesteś pewny/pewna że chcesz go opublikować?</string>
+    <string name="publish">Opublikuj</string>
+    <string name="places_with_community_posts">Miejsca z artykułami społeczności</string>
+    <string name="location_name">Location name</string>
 </resources>

@@ -13,7 +13,8 @@ fun initKoin(
     modules(
         platformModule(),
         authModule(),
-        commonModule()
+        commonModule(),
+        postModule()
     )
 }
 

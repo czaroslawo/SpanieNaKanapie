@@ -276,13 +276,14 @@ fun PickLocationScreen(
                     }
                     Box(Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.CenterEnd){
-                        Button(onClick = {
-                            Log.d("asd2", viewModel.hashCode().toString())
+                        Button(modifier = Modifier.padding(bottom = 8.dp, end = 8.dp),
+                            onClick = {
                             viewModel.pickPlace(
                             PickPlace(
                                 name = placeName,
                                 address = placeAddress
                             ))
+                                viewModel.setEnabling(true)
                             navController.navigate(Screen.NewPost.route)
                         }) {
                             Text(stringResource(R.string.confirm))

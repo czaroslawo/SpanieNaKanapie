@@ -24,6 +24,10 @@ class PostViewModel: ViewModel(), KoinComponent  {
     fun setContent(value:String){
         _state.value = state.value.copy(content = value)
     }
+    fun setTitle(value:String){
+        _state.value = state.value.copy(title = value)
+    }
+
 
     fun pickPlace(pick: PickPlace){
         viewModelScope.launch {
@@ -33,7 +37,9 @@ class PostViewModel: ViewModel(), KoinComponent  {
             )
 
         }
+    }
 
+    fun addArticle(){
 
     }
 }

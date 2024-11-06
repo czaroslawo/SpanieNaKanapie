@@ -23,6 +23,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Biotech
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
@@ -85,6 +86,7 @@ import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateBearing
 import com.mapbox.maps.plugin.viewport.data.FollowPuckViewportStateOptions
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.spanienakanapie.utils.Dialog
 
 @OptIn(ExperimentalMaterial3Api::class, MapboxExperimental::class)
 @Composable
@@ -109,37 +111,15 @@ fun NewPostScreen(navController: NavController,
 
         }
     }
+    val openDialog = remember { mutableStateOf(false) }
 
-    val density = LocalDensity.current.density
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                // By returning Offset.Zero, we indicate that we are consuming the scroll and not passing it up.
-                return Offset.Zero
-            }
 
-            override fun onPostScroll(
-                consumed: Offset,
-                available: Offset,
-                source: NestedScrollSource
-            ): Offset {
-                // Again, return Offset.Zero to consume any remaining scroll distance.
-                return available
-            }
-        }
-    }
     val scrollState = rememberScrollState()
-    var dragState by remember{
-        mutableStateOf(false)
-    }
-
-
-
 
 
     Scaffold(topBar = {
         CenterAlignedTopAppBar(navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { navController.popBackStack() }) {
                 Icon(Icons.Default.ArrowBack, "")
             }
         },
@@ -149,11 +129,6 @@ fun NewPostScreen(navController: NavController,
                     color = MaterialTheme.colorScheme.primary
                 )
             },
-            actions = {
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(Icons.Default.Check, "")
-                }
-            }
         )
     }) {
         Column(
@@ -167,18 +142,17 @@ fun NewPostScreen(navController: NavController,
                 .padding(horizontal = 10.dp)
                 .verticalScroll(
                     scrollState,
-                    enabled = if (!dragState) true else false
                 )
 
             ) {
                 OutlinedTextField(
-                    value = titleValue,
-                    onValueChange = { titleValue = it },
+                    value = state.title,
+                    onValueChange = { viewModel.setTitle(it) },
                     label = { Text(text = stringResource(R.string.article_title)) },
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
-                    value = articleContentValue, onValueChange = { articleContentValue = it },
+                    value = state.content, onValueChange = { viewModel.setContent(it) },
                     maxLines = 1000,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -199,39 +173,48 @@ fun NewPostScreen(navController: NavController,
                 OutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical= 16.dp),
+                        .padding(top = 16.dp),
+                    value = state.placeName?: "",
+                    onValueChange = { viewModel.setPlaceName(it) },
+                    enabled = state.placeName != null,
+                    placeholder = { Text(stringResource(R.string.location_name)) })
+
+                OutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
                     value = state.placeAddress ?: "",
                     onValueChange = { viewModel.setPlaceAddress(it) },
-                    enabled = !state.placeAddress.isNullOrEmpty(),
+                    enabled = state.placeAddress != null,
                     placeholder = { Text(stringResource(R.string.location_address)) })
 
                 Box(modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.BottomEnd) {
-                    Button(onClick = { /*TODO*/ },
+                    Button(onClick = { openDialog.value = true },
                         modifier = Modifier.padding(vertical = 16.dp)) {
-                        Text(text = stringResource(id = R.string.confirm))
+                        Text(text = stringResource(R.string.publish))
                     }
                 }
+                if (openDialog.value) {
+                    Dialog(
+                        onDismissRequest = { openDialog.value = false },
+                        onConfirmation = {
+                            openDialog.value = false
+                            navController.navigate(Screen.Itinerary.route)
+                        },
+                        dialogTitle = stringResource(R.string.are_you_sure),
+                        dialogText = stringResource(R.string.Every_user_will_see),
+                        icon = Icons.Default.Biotech
+                    )
+                }
+            }
 
 
             }
         }
     }
-}
 
-fun Modifier.scrollEnabled(enabled: Boolean) = nestedScroll(
-    connection = object : NestedScrollConnection {
-        override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-            // When scrolling is enabled, allow the scroll offset to pass through.
-            return if (enabled) Offset.Zero else available
-        }
 
-        override suspend fun onPreFling(available: Velocity): Velocity {
-            // When scrolling is enabled, allow flinging to happen.
-            return if (enabled) Velocity.Zero else available
-        }
-    }
-)
 
 
 

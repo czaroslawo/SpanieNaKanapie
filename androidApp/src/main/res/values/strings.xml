@@ -8,4 +8,10 @@
     <string name="pick_the_location">Pick the location</string>
     <string name="location_address">Location address</string>
     <string name="confirm">Confirm</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="Every_user_will_see">"Every user will be able to see your article. Are you sure you want to publish your post? "</string>
+    <string name="publish">Publish</string>
+    <string name="places_with_community_posts">Places with community posts</string>
+    <string name="location_name">Location name</string>
 </resources>
