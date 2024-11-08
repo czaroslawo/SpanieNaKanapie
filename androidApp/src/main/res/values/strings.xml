@@ -14,4 +14,5 @@
     <string name="publish">Publish</string>
     <string name="places_with_community_posts">Places with community posts</string>
     <string name="location_name">Location name</string>
+    <string name="cant_load_posts_try_again">Can\'t load posts, try again</string>
 </resources>

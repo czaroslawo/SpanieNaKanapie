@@ -108,6 +108,9 @@ fun PickLocationScreen(
     var placeStreet by remember {
         mutableStateOf<String?>("")
     }
+    var city by remember {
+        mutableStateOf<String?>("")
+    }
 
     val searchCallback = object : SearchCallback {
         override fun onResults(results: List<SearchResult>, responseInfo: ResponseInfo) {
@@ -119,7 +122,10 @@ fun PickLocationScreen(
                     placeAddress = searchResult.fullAddress
                     placeName = searchResult.name
                     placeStreet = searchResult.address?.street
-                    Log.i("searchReuslt", searchResult.fullAddress.toString())
+                    city = searchResult.address?.place
+
+                    Log.i("searchReusltNameM", searchResult.matchingName.toString())
+                    Log.i("searchReuslt", city.toString())
                 }
             }
         }
@@ -281,9 +287,9 @@ fun PickLocationScreen(
                             viewModel.pickPlace(
                             PickPlace(
                                 name = placeName,
-                                address = placeAddress
+                                address = placeAddress,
+                                city = city
                             ))
-                                viewModel.setEnabling(true)
                             navController.navigate(Screen.NewPost.route)
                         }) {
                             Text(stringResource(R.string.confirm))

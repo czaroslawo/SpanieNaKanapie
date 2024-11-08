@@ -40,7 +40,7 @@ fun BottomNavigationBar(
 ) {
     val screens = listOf(
         BottomNavItem.Home,
-        BottomNavItem.Itinerary
+        BottomNavItem.Posts
     )
     val backstackEntry = navController.currentBackStackEntryAsState()
     val currentDestination = backstackEntry.value?.destination

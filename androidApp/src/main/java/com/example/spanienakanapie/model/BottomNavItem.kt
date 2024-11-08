@@ -12,5 +12,5 @@ sealed class BottomNavItem(
     val icon: ImageVector,
 ){
     object Home : BottomNavItem("Home", Screen.Home.route, Icons.Default.Home)
-    object Itinerary : BottomNavItem("Itinerary", Screen.Itinerary.route, Icons.Default.AirlineStops)
+    object Posts : BottomNavItem("Itinerary", Screen.Posts.route, Icons.Default.AirlineStops)
 }

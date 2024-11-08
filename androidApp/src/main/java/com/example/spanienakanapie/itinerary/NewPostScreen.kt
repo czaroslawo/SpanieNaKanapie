@@ -199,8 +199,9 @@ fun NewPostScreen(navController: NavController,
                     Dialog(
                         onDismissRequest = { openDialog.value = false },
                         onConfirmation = {
+                            viewModel.addPost()
                             openDialog.value = false
-                            navController.navigate(Screen.Itinerary.route)
+                            navController.navigate(Screen.Posts.route)
                         },
                         dialogTitle = stringResource(R.string.are_you_sure),
                         dialogText = stringResource(R.string.Every_user_will_see),

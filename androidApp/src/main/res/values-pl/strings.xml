@@ -15,4 +15,5 @@
     <string name="publish">Opublikuj</string>
     <string name="places_with_community_posts">Miejsca z artykułami społeczności</string>
     <string name="location_name">Location name</string>
+    <string name="cant_load_posts_try_again">Nie udało się załadowac postów, spróbuj ponownie</string>
 </resources>
