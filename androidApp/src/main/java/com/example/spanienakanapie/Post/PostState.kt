@@ -1,4 +1,4 @@
-package com.example.spanienakanapie.itinerary
+package com.example.spanienakanapie.Post
 
 import com.example.shared.data.models.City
 import com.example.shared.data.models.Post

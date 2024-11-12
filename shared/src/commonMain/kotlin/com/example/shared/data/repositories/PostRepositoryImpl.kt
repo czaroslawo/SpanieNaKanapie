@@ -6,6 +6,7 @@ import com.example.shared.data.models.Post
 import com.example.shared.data.services.PostService
 import com.example.shared.data.storage.SharedSettingsHelper
 import com.example.shared.data.utils.Resource
+import de.jensklingenberg.ktorfit.http.Query
 import io.ktor.utils.io.errors.EOFException
 
 class PostRepositoryImpl(
@@ -21,12 +22,22 @@ class PostRepositoryImpl(
 
     }
 
-    override suspend fun getPosts(): Resource<List<Post>> {
-        return postService.getPosts()
+    override suspend fun getPosts(city: String): Resource<List<Post>> {
+        return try{
+            val posts = postService.getPosts(city)
+            Resource.Success(posts)
+        }catch(e: Exception){
+            Resource.Error("Failed to fetch posts")
+        }
     }
 
     override suspend fun getCity(): Resource<List<City>> {
-        return postService.getCity()
+        return try {
+            val response = postService.getCity()
+            Resource.Success(response.data)
+        } catch (e: Exception) {
+            Resource.Error("Failed to fetch cities")
+        }
     }
 
 }

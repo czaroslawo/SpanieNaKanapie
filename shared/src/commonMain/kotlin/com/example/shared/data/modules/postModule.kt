@@ -5,6 +5,7 @@ import com.example.shared.data.repositories.PostRepositoryImpl
 import com.example.shared.data.services.PostService
 import com.example.shared.data.storage.SharedSettingsHelper
 import com.example.shared.data.utils.Constants
+import com.example.shared.data.utils.ResponseConverterFactory
 import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
@@ -25,10 +26,10 @@ fun postModule() = module{
                 }
                 install(DefaultRequest) {
                     header(
-                        io.ktor.http.HttpHeaders.ContentType,
+                        HttpHeaders.ContentType,
                         io.ktor.http.ContentType.Application.Json
                     )
-                    header(io.ktor.http.HttpHeaders.Accept, io.ktor.http.ContentType.Application.Json)
+                    header(HttpHeaders.Accept, io.ktor.http.ContentType.Application.Json)
                     header(
                         HttpHeaders.Authorization,
                         "Bearer $authToken"
@@ -38,7 +39,7 @@ fun postModule() = module{
             }
 
 
-            val ktorfit = Ktorfit.Builder().baseUrl(Constants.API_URL).httpClient(ktorClient).build()
+            val ktorfit = Ktorfit.Builder().baseUrl(Constants.API_URL).httpClient(ktorClient).converterFactories(ResponseConverterFactory()).build()
             ktorfit.create<PostService>()
         }
 

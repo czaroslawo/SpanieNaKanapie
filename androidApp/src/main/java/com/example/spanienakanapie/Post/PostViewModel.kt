@@ -1,4 +1,4 @@
-package com.example.spanienakanapie.itinerary
+package com.example.spanienakanapie.Post
 
 
 import android.util.Log
@@ -9,7 +9,6 @@ import com.example.shared.data.models.Post
 import com.example.shared.data.repositories.PostRepository
 import com.example.shared.data.utils.Resource
 import com.example.spanienakanapie.R
-import com.example.spanienakanapie.authorization.AuthState
 import com.example.spanienakanapie.utils.UiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,6 +35,9 @@ class PostViewModel: ViewModel(), KoinComponent  {
     }
     fun setTitle(value:String){
         _state.value = state.value.copy(title = value)
+    }
+    fun setCity(value: String){
+        _state.value = state.value.copy(city = value)
     }
 
 
@@ -72,7 +74,7 @@ class PostViewModel: ViewModel(), KoinComponent  {
 
     fun getPosts(){
         viewModelScope.launch {
-            when(val result = repository.getPosts()){
+            when(val result = state.value.city?.let { repository.getPosts(it) }){
                 is Resource.Success ->{
                     Log.d("Resource", "Success")
                     _state.value = state.value.copy(
@@ -87,6 +89,8 @@ class PostViewModel: ViewModel(), KoinComponent  {
                         )
                     )
                 }
+
+                null -> TODO()
             }
         }
     }
@@ -108,6 +112,8 @@ class PostViewModel: ViewModel(), KoinComponent  {
                         )
                     )
                 }
+
+
             }
         }
     }

@@ -25,10 +25,9 @@ import com.example.spanienakanapie.authorization.AuthViewModel
 import com.example.spanienakanapie.authorization.LoginScreen
 import com.example.spanienakanapie.authorization.RegistrationScreen
 import com.example.spanienakanapie.home.HomeScreen
-import com.example.spanienakanapie.itinerary.NewPostScreen
-import com.example.spanienakanapie.itinerary.PickLocationScreen
-import com.example.spanienakanapie.itinerary.PostsScreen
-import com.example.spanienakanapie.model.BottomNavItem
+import com.example.spanienakanapie.Post.NewPostScreen
+import com.example.spanienakanapie.Post.PickLocationScreen
+import com.example.spanienakanapie.Post.PostsScreen
 import com.example.spanienakanapie.ui.theme.AppTheme
 import com.example.spanienakanapie.viewmodels.MainViewModel
 import com.mapbox.maps.MapView

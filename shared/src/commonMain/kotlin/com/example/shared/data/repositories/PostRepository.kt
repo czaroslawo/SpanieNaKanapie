@@ -6,6 +6,6 @@ import com.example.shared.data.utils.Resource
 
 interface PostRepository {
     suspend fun createPost(post: Post)
-    suspend fun getPosts(): Resource<List<Post>>
+    suspend fun getPosts(city: String): Resource<List<Post>>
     suspend fun getCity(): Resource<List<City>> //maybe i will need add a ktorfit repsonseConverter
 }
