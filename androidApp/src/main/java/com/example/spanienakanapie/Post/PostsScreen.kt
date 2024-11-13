@@ -1,5 +1,6 @@
 package com.example.spanienakanapie.Post
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -40,12 +42,18 @@ fun PostsScreen(navController: NavController,
 ){
     val state by viewModel.state.collectAsStateWithLifecycle()
     val cities: List<City> = state.cities
-    var isExpended by remember{
-        mutableStateOf(false)
+//    var isExpended by remember{
+//        mutableStateOf(false)
+//    }
+    var expandedItems by rememberSaveable {
+        mutableStateOf<Map<Int, Boolean>>(emptyMap())
     }
+    var index = 0
     LaunchedEffect(true) {
         viewModel.getCities()
+        expandedItems = cities.mapIndexed { index, _ -> index to false }.toMap()
     }
+
 
 
 
@@ -56,13 +64,19 @@ fun PostsScreen(navController: NavController,
     ){
         Column(modifier = Modifier.padding(it)) {
             LazyColumn {
+
                 items(cities.size){city->
-                    CityItem(city = cities[city].city, isExpended = isExpended,
-                        onItemClicked = {
-                            viewModel.setCity(cities[city].city)
-                            !isExpended
-                            viewModel.getPosts()
-                        })
+                        CityItem(city = cities[city].city, isExpended = expandedItems[city] ?: false,
+                            onItemClicked = {
+                                viewModel.setCity(cities[city].city)
+
+                                expandedItems = expandedItems.toMutableMap().apply {
+                                    this[city] = !(this[city] ?: false)
+                                }
+                                viewModel.getPosts()
+                            })
+                    Log.d("ExpandedItem", expandedItems[city].toString())
+                    }
 
                 }
             }
@@ -80,7 +94,7 @@ fun PostsScreen(navController: NavController,
 
         }
     }
-}
+
 
 @Composable
 @Preview
