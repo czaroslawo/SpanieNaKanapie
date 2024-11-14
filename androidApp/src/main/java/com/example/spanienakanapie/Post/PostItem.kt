@@ -21,7 +21,7 @@ fun PostItem(
             .height(100.dp)
             .padding(16.dp)) {
         Text(text = title,
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.titleSmall,
             modifier = Modifier.padding(vertical = 8.dp))
         Text(text = locationName,
             style = MaterialTheme.typography.bodySmall)

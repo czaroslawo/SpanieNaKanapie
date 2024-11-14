@@ -25,7 +25,7 @@ class PostRepositoryImpl(
     override suspend fun getPosts(city: String): Resource<List<Post>> {
         return try{
             val posts = postService.getPosts(city)
-            Resource.Success(posts)
+            Resource.Success(posts.data)
         }catch(e: Exception){
             Resource.Error("Failed to fetch posts")
         }

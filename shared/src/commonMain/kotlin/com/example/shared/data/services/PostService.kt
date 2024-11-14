@@ -4,6 +4,7 @@ package com.example.shared.data.services
 import com.example.shared.data.models.City
 import com.example.shared.data.models.CityResponse
 import com.example.shared.data.models.Post
+import com.example.shared.data.models.PostReponse
 import com.example.shared.data.models.UserToken
 import com.example.shared.data.utils.Resource
 import de.jensklingenberg.ktorfit.http.Body
@@ -16,7 +17,7 @@ interface PostService {
     suspend fun createPost(@Body post: Post)
 
     @GET("post")
-    suspend fun getPosts(@Query("city") city: String): List<Post>
+    suspend fun getPosts(@Query("city") city: String): PostReponse
 
     @GET("city")
     suspend fun getCity(): CityResponse

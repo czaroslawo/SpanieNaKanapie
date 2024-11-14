@@ -10,6 +10,8 @@ import de.jensklingenberg.ktorfit.Ktorfit
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.header
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
@@ -36,8 +38,15 @@ fun postModule() = module{
                     )
 
                 }
+                install(Logging) {
+                    level = LogLevel.ALL
+                    logger = object : io.ktor.client.plugins.logging.Logger {
+                        override fun log(message: String) {
+                            co.touchlab.kermit.Logger.d(message, null, "HTTP CLIENT")
+                        }
+                    }
+                }
             }
-
 
             val ktorfit = Ktorfit.Builder().baseUrl(Constants.API_URL).httpClient(ktorClient).converterFactories(ResponseConverterFactory()).build()
             ktorfit.create<PostService>()
