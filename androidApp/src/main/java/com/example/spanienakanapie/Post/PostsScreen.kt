@@ -62,10 +62,10 @@ fun LazyListScope.Section(
 
         items(posts.size){
             AnimatedVisibility(visible = isExpanded,
-                enter = fadeIn(animationSpec = tween(300)) +
-                        expandVertically(animationSpec = tween(300)),
-                exit = fadeOut(animationSpec = tween(300)) +
-                        shrinkVertically(animationSpec = tween(300))
+                enter = fadeIn(animationSpec = tween(500)) +
+                        expandVertically(animationSpec = tween(500)),
+                exit = fadeOut(animationSpec = tween(500)) +
+                        shrinkVertically(animationSpec = tween(500))
                 ) {
                     PostItem(
                         title = posts[it].title,

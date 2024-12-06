@@ -52,7 +52,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.shared.data.models.PickPlace
 import com.example.spanienakanapie.navigation.Screen
+import com.mapbox.maps.Style
+import com.mapbox.maps.coroutine.awaitCameraForCoordinates
+import com.mapbox.maps.coroutine.mapLoadedEvents
 import com.mapbox.maps.extension.compose.annotation.generated.PointAnnotation
+import com.mapbox.maps.plugin.viewport.viewport
 import com.mapbox.search.ResponseInfo
 import com.mapbox.search.SearchCallback
 import com.mapbox.search.result.SearchResult
@@ -222,18 +226,35 @@ fun PickLocationScreen(
                         true
                     }
 
+                    mapView.mapboxMap.loadStyle(Style.MAPBOX_STREETS){style ->
+                        mapView.mapboxMap.mapLoadedEvents
 
-                    mapViewportState.transitionToFollowPuckState(
-                        followPuckViewportStateOptions = FollowPuckViewportStateOptions.Builder()
+
+
+                    }
+
+                    val followUser = mapView.viewport.makeFollowPuckViewportState(
+                        options = FollowPuckViewportStateOptions.Builder()
                             .bearing(FollowPuckViewportStateBearing.Constant(0.0))
                             .padding(EdgeInsets(200.0 * density, 0.0, 0.0, 0.0))
                             .pitch(5.0)
                             .zoom(15.0)
                             .build(),
+                    )
 
-                        ) { success ->
+//                   mapViewportState.
+//                    transitionToFollowPuckState(
+//                        followPuckViewportStateOptions = FollowPuckViewportStateOptions.Builder()
+//                            .bearing(FollowPuckViewportStateBearing.Constant(0.0))
+//                            .padding(EdgeInsets(200.0 * density, 0.0, 0.0, 0.0))
+//                            .pitch(5.0)
+//                            .zoom(15.0)
+//                            .build(),
+//
+//                        )
 
-                    }
+                    mapView.viewport.transitionTo(followUser)
+                    
 
                 }
             }
