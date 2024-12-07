@@ -14,5 +14,5 @@ If you're just walking through a city, you can open the app and instantly learn 
   <li>Material 3</li>
   <li>Kotlin Multiplatform</li>
 </ul>
-> I am preparing my app to be multiplatform in the future, which is why I am using KMP. Unfortunately, I don’t have macOS yet, so I can’t develop an app for iOS.
+> *I am preparing my app to be multiplatform in the future, which is why I am using KMP. Unfortunately, I don’t have macOS yet, so I can’t develop an app for iOS.*
 
